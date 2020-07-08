@@ -24,13 +24,10 @@ import (
 // searchCmd represents the search command
 var searchCmd = &cobra.Command{
 	Use:   "search",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Search for foods by keywords",
+	Long: `This action and subsequent arguments are passed in to the FoodData Central API 
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Example: ./go-getter-fdc search onion`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("search called")
 	},
