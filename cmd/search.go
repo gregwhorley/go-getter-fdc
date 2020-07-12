@@ -17,7 +17,7 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/gregwhorley/go-getter-fdc/pkg/client"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +29,9 @@ var searchCmd = &cobra.Command{
 
 Example: ./go-getter-fdc search onion`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("search called")
+		fmt.Printf("Search called for %v...\n", args)
+		s := client.GetFoodsList(args)
+		fmt.Printf("%s", s)
 	},
 }
 
