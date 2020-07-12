@@ -30,7 +30,7 @@ var searchCmd = &cobra.Command{
 Example: ./go-getter-fdc search onion`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Search called for %v...\n", args)
-		s := client.GetFoodsList(args)
+		s := client.FoodsSearch(args)
 		fmt.Printf("%s", s)
 	},
 }

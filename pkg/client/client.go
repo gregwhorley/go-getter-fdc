@@ -10,10 +10,12 @@ import (
 	"strings"
 )
 
-var foodUrl, _ = url.Parse("https://api.nal.usda.gov/fdc/v1")
-var apiKey string
+var (
+	foodUrl, _ = url.Parse("https://api.nal.usda.gov/fdc/v1")
+	apiKey string
+)
 
-func GetFoodsList(keywords []string) string {
+func FoodsSearch(keywords []string) string {
 	apiKeyCheck()
 	apiKey = os.Getenv("API_KEY")
 	foodUrl.Path += "/foods/search"
