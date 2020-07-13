@@ -1,3 +1,18 @@
+/*
+Copyright © 2020 Greg Whorley <greg@whorley.com>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package client
 
 import (
@@ -17,7 +32,6 @@ var (
 
 func FoodsSearch(keywords []string) string {
 	apiKeyCheck()
-	apiKey = os.Getenv("API_KEY")
 	foodUrl.Path += "/foods/search"
 	params := url.Values{}
 	params.Add("api_key", apiKey)
@@ -53,6 +67,8 @@ func apiKeyCheck() {
 	_, exists := os.LookupEnv("API_KEY")
 	if !exists {
 		log.Fatal("API_KEY not set! Cancelling search...\n")
+	} else {
+		apiKey = os.Getenv("API_KEY")
 	}
 }
 
@@ -63,8 +79,7 @@ func buildSearchString(keywords []string) string {
 	} else {
 		for i := 0; i < len(keywords); i++ {
 			if i != (len(keywords) - 1) {
-				stringWithSpace := fmt.Sprintf("%s ")
-				builder.WriteString(stringWithSpace)
+				builder.WriteString(fmt.Sprintf("%s ", keywords[i]))
 			} else {
 				builder.WriteString(keywords[i])
 			}
