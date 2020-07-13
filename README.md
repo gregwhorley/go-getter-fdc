@@ -3,6 +3,8 @@ Simple CLI tool that retrieves food data from USDA's FoodData Central API
 
 https://fdc.nal.usda.gov/api-guide.html
 
+You will need an API key from FDC to use this app: https://fdc.nal.usda.gov/api-key-signup.html
+
 ## Building
 `go build`
 
@@ -11,4 +13,4 @@ https://fdc.nal.usda.gov/api-guide.html
 
 ## Usage
 Search for food by keywords:
-`./go-getter-fdc search cheddar cheese`
+`API_KEY=yourKey ./go-getter-fdc search cheddar cheese`
