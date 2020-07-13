@@ -79,8 +79,7 @@ func buildSearchString(keywords []string) string {
 	} else {
 		for i := 0; i < len(keywords); i++ {
 			if i != (len(keywords) - 1) {
-				stringWithSpace := fmt.Sprintf("%s ", keywords[i])
-				builder.WriteString(stringWithSpace)
+				builder.WriteString(fmt.Sprintf("%s ", keywords[i]))
 			} else {
 				builder.WriteString(keywords[i])
 			}
