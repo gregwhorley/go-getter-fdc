@@ -33,13 +33,13 @@ Example: ./go-getter-fdc search onion`,
 		foodsSearch := client.FoodsSearch(args)
 		for _, food := range foodsSearch.Foods {
 			fmt.Printf("Basic Data:\n")
-			fmt.Printf("  Description: %v\n  Data Type: %v\n",
-				food.Description, food.DataType)
+			fmt.Printf("  Description: %v\n", food.Description)
+			fmt.Printf("  Data Type: %v\n", food.DataType)
 			fmt.Printf("  Ingredients: %v\n", food.Ingredients)
 			fmt.Printf("Nutrient Data:\n")
 			for _, nutrients := range food.FoodNutrients {
-				fmt.Printf("  Name: %v\n  Amount: %v%v\n",
-					nutrients.NutrientName, nutrients.NutrientNumber, nutrients.UnitName)
+				fmt.Printf("  Name: %v\n", nutrients.NutrientName)
+				fmt.Printf("  Amount: %v%v\n", nutrients.NutrientNumber, nutrients.UnitName)
 			}
 		}
 	},
