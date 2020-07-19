@@ -30,8 +30,18 @@ var searchCmd = &cobra.Command{
 Example: ./go-getter-fdc search onion`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Search called for %v...\n", args)
-		s := client.FoodsSearch(args)
-		fmt.Printf("%s", s)
+		foodsSearch := client.FoodsSearch(args)
+		for _, food := range foodsSearch.Foods {
+			fmt.Printf("Basic Data:\n")
+			fmt.Printf("  Description: %v\n", food.Description)
+			fmt.Printf("  Data Type: %v\n", food.DataType)
+			fmt.Printf("  Ingredients: %v\n", food.Ingredients)
+			fmt.Printf("Nutrient Data:\n")
+			for _, nutrients := range food.FoodNutrients {
+				fmt.Printf("  Name: %v\n", nutrients.NutrientName)
+				fmt.Printf("  Amount: %v%v\n", nutrients.NutrientNumber, nutrients.UnitName)
+			}
+		}
 	},
 }
 
