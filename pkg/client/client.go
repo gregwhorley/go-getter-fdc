@@ -16,6 +16,7 @@ limitations under the License.
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -26,11 +27,12 @@ import (
 )
 
 var (
-	foodUrl, _ = url.Parse("https://api.nal.usda.gov/fdc/v1")
-	apiKey string
+	foodUrl, _  = url.Parse("https://api.nal.usda.gov/fdc/v1")
+	apiKey      string
+	foodResults FoodsSearchJson
 )
 
-func FoodsSearch(keywords []string) string {
+func FoodsSearch(keywords []string) FoodsSearchJson {
 	apiKeyCheck()
 	foodUrl.Path += "/foods/search"
 	params := url.Values{}
@@ -53,14 +55,10 @@ func FoodsSearch(keywords []string) string {
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
-	// TODO: figure out unmarshalling json
-	return string(body)
-	//var s string
-	//jsonErr := json.Unmarshal(body, &s)
-	//if jsonErr != nil {
-	//	log.Fatal(jsonErr)
-	//}
-	//return s
+	if jsonErr := json.Unmarshal(body, &foodResults); jsonErr != nil {
+		panic(jsonErr)
+	}
+	return foodResults
 }
 
 func apiKeyCheck() {
