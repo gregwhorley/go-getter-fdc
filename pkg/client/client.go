@@ -48,7 +48,7 @@ func FoodsSearch(keywords []string) FoodsSearchJson {
 		log.Fatal(respErr)
 	}
 	if resp.StatusCode != 200 {
-		log.Fatal("Query returned a HTTP ", resp.StatusCode)
+		log.Fatal("Expected HTTP 200 but received ", resp.StatusCode)
 	}
 	defer resp.Body.Close()
 	body, readErr := ioutil.ReadAll(resp.Body)
@@ -62,8 +62,7 @@ func FoodsSearch(keywords []string) FoodsSearchJson {
 }
 
 func apiKeyCheck() {
-	_, exists := os.LookupEnv("API_KEY")
-	if !exists {
+	if _, exists := os.LookupEnv("API_KEY"); !exists {
 		log.Fatal("API_KEY not set! Cancelling search...\n")
 	} else {
 		apiKey = os.Getenv("API_KEY")
