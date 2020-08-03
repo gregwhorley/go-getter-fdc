@@ -32,16 +32,15 @@ var (
 	foodResults FoodsSearchJson
 )
 
-func FoodsSearch(keywords []string) FoodsSearchJson {
+func FoodsSearch(keywords []string, pageSize string, dataType string, requireAllWords string) FoodsSearchJson {
 	apiKeyCheck()
 	foodUrl.Path += "/foods/search"
 	params := url.Values{}
 	params.Add("api_key", apiKey)
 	params.Add("query", buildSearchString(keywords))
-	// TODO: make these params configurable
-	params.Add("pageSize", "1")
-	params.Add("dataType", "Foundation")
-	params.Add("requireAllWords", "true")
+	params.Add("pageSize", pageSize)
+	params.Add("dataType", dataType)
+	params.Add("requireAllWords", requireAllWords)
 	foodUrl.RawQuery = params.Encode()
 	resp, respErr := http.Get(foodUrl.String())
 	if respErr != nil {

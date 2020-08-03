@@ -22,7 +22,8 @@ import (
 )
 
 // searchCmd represents the search command
-var searchCmd = &cobra.Command{
+var (
+	searchCmd = &cobra.Command{
 	Use:   "search",
 	Short: "Search for foods by keywords",
 	Long: `This action and subsequent arguments are passed in to the FoodData Central API 
@@ -30,7 +31,8 @@ var searchCmd = &cobra.Command{
 Example: ./go-getter-fdc search onion`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Search called for %v...\n", args)
-		foodsSearch := client.FoodsSearch(args)
+		// TODO collect all flag values and pass one thing into FoodsSearch()
+		foodsSearch := client.FoodsSearch(args, pageSize, dataType, requireAllWords)
 		for _, food := range foodsSearch.Foods {
 			fmt.Printf("Basic Data:\n")
 			fmt.Printf("  Description: %v\n", food.Description)
@@ -44,6 +46,10 @@ Example: ./go-getter-fdc search onion`,
 		}
 	},
 }
+	pageSize string
+	dataType string
+	requireAllWords string
+)
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
@@ -56,5 +62,7 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	searchCmd.Flags().StringVar(&pageSize,"page-size", "1", "Set the page size for the result set. Defaults to 1.")
+	searchCmd.Flags().StringVar(&dataType, "datatype", "Foundation", "Set the datatype to one of the following:\nFoundation\nBranded\nSurvey\nLegacy")
+	searchCmd.Flags().StringVar(&requireAllWords, "require-all-words", "true", "Require all keywords in search results. Defaults to true.")
 }

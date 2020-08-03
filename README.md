@@ -12,5 +12,8 @@ You will need an API key from FDC to use this app: https://fdc.nal.usda.gov/api-
 `go test -v`
 
 ## Usage
-Search for food by keywords:
+Run `./go-getter-fdc search --help` for example usage and valid flags. Your FDC API key must either
+be exported or passed into the command line as an `API_KEY` environment variable.
+
+Example command to search for food by keywords:
 `API_KEY=yourKey ./go-getter-fdc search cheddar cheese`
