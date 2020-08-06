@@ -17,13 +17,10 @@ package client
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
-	"os"
-	"strings"
 )
 
 var (
@@ -33,11 +30,11 @@ var (
 )
 
 func FoodsSearch(keywords []string, pageSize string, dataType string, requireAllWords string) FoodsSearchJson {
-	apiKeyCheck()
+	apiKey = GetApiKey()
 	foodUrl.Path += "/foods/search"
 	params := url.Values{}
 	params.Add("api_key", apiKey)
-	params.Add("query", buildSearchString(keywords))
+	params.Add("query", BuildSearchString(keywords))
 	params.Add("pageSize", pageSize)
 	params.Add("dataType", dataType)
 	params.Add("requireAllWords", requireAllWords)
@@ -58,28 +55,4 @@ func FoodsSearch(keywords []string, pageSize string, dataType string, requireAll
 		panic(jsonErr)
 	}
 	return foodResults
-}
-
-func apiKeyCheck() {
-	if _, exists := os.LookupEnv("API_KEY"); !exists {
-		log.Fatal("API_KEY not set! Cancelling search...\n")
-	} else {
-		apiKey = os.Getenv("API_KEY")
-	}
-}
-
-func buildSearchString(keywords []string) string {
-	var builder strings.Builder
-	if i := len(keywords); i == 1 {
-		builder.WriteString(keywords[0])
-	} else {
-		for i := 0; i < len(keywords); i++ {
-			if i != (len(keywords) - 1) {
-				builder.WriteString(fmt.Sprintf("%s ", keywords[i]))
-			} else {
-				builder.WriteString(keywords[i])
-			}
-		}
-	}
-	return builder.String()
 }
