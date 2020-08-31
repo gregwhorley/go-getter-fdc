@@ -31,8 +31,8 @@ var (
 Example: ./go-getter-fdc search onion`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Search called for %v...\n", args)
-		// TODO collect all flag values and pass one thing into FoodsSearch()
-		foodsSearch := client.FoodsSearch(args, pageSize, dataType, requireAllWords)
+		queryOptions = client.QueryOptionsFiller(pageSize, dataType, requireAllWords)
+		foodsSearch := client.FoodsSearch(args, queryOptions)
 		for _, food := range foodsSearch.Foods {
 			fmt.Printf("Basic Data:\n")
 			fmt.Printf("  Description: %v\n", food.Description)
@@ -46,6 +46,7 @@ Example: ./go-getter-fdc search onion`,
 		}
 	},
 }
+	queryOptions map[string]string
 	pageSize string
 	dataType string
 	requireAllWords string
