@@ -29,15 +29,15 @@ var (
 	foodResults FoodsSearchJson
 )
 
-func FoodsSearch(keywords []string, pageSize string, dataType string, requireAllWords string) FoodsSearchJson {
+func FoodsSearch(keywords []string, queryOptions map[string]string) FoodsSearchJson {
 	apiKey = GetApiKey()
 	foodUrl.Path += "/foods/search"
 	params := url.Values{}
 	params.Add("api_key", apiKey)
 	params.Add("query", BuildSearchString(keywords))
-	params.Add("pageSize", pageSize)
-	params.Add("dataType", dataType)
-	params.Add("requireAllWords", requireAllWords)
+	params.Add("pageSize", queryOptions["pageSize"])
+	params.Add("dataType", queryOptions["dataType"])
+	params.Add("requireAllWords", queryOptions["requireAllWords"])
 	foodUrl.RawQuery = params.Encode()
 	resp, respErr := http.Get(foodUrl.String())
 	if respErr != nil {
@@ -47,6 +47,7 @@ func FoodsSearch(keywords []string, pageSize string, dataType string, requireAll
 		log.Fatal("Expected HTTP 200 but received ", resp.StatusCode)
 	}
 	defer resp.Body.Close()
+	// TODO: I want to omit nutrient data with names like "int:int"
 	body, readErr := ioutil.ReadAll(resp.Body)
 	if readErr != nil {
 		log.Fatal(readErr)
