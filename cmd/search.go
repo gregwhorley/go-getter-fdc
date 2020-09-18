@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"github.com/gregwhorley/go-getter-fdc/pkg/client"
 	"github.com/spf13/cobra"
+	"regexp"
 )
 
 // searchCmd represents the search command
@@ -33,15 +34,20 @@ Example: ./go-getter-fdc search onion`,
 		fmt.Printf("Search called for %v...\n", args)
 		queryOptions = client.QueryOptionsFiller(pageSize, dataType, requireAllWords)
 		foodsSearch := client.FoodsSearch(args, queryOptions)
+		// TODO: open a browser window and display food data
 		for _, food := range foodsSearch.Foods {
 			fmt.Printf("Basic Data:\n")
 			fmt.Printf("  Description: %v\n", food.Description)
 			fmt.Printf("  Data Type: %v\n", food.DataType)
-			fmt.Printf("  Ingredients: %v\n", food.Ingredients)
+			if food.Ingredients != "" {
+				fmt.Printf("  Ingredients: %v\n", food.Ingredients)
+			}
 			fmt.Printf("Nutrient Data:\n")
 			for _, nutrients := range food.FoodNutrients {
-				fmt.Printf("  Name: %v\n", nutrients.NutrientName)
-				fmt.Printf("  Amount: %v%v\n", nutrients.NutrientNumber, nutrients.UnitName)
+				if matched, _ := regexp.Match(`[\d]:[\d]`, []byte(nutrients.NutrientName)) ; !matched {
+					fmt.Printf("  Name: %v\n", nutrients.NutrientName)
+					fmt.Printf("  Amount: %v%v\n", nutrients.NutrientNumber, nutrients.UnitName)
+				}
 			}
 		}
 	},
@@ -63,7 +69,7 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	searchCmd.Flags().StringVar(&pageSize,"page-size", "1", "Set the page size for the result set. Defaults to 1.")
+	searchCmd.Flags().StringVar(&pageSize,"page-size", "1", "Set the page size for the result set.")
 	searchCmd.Flags().StringVar(&dataType, "datatype", "Foundation", "Set the datatype to one of the following:\nFoundation\nBranded\nSurvey\nLegacy")
-	searchCmd.Flags().StringVar(&requireAllWords, "require-all-words", "true", "Require all keywords in search results. Defaults to true.")
+	searchCmd.Flags().StringVar(&requireAllWords, "require-all-words", "true", "Require all keywords in search results.")
 }

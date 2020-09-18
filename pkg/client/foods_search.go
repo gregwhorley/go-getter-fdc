@@ -47,7 +47,6 @@ func FoodsSearch(keywords []string, queryOptions map[string]string) FoodsSearchJ
 		log.Fatal("Expected HTTP 200 but received ", resp.StatusCode)
 	}
 	defer resp.Body.Close()
-	// TODO: I want to omit nutrient data with names like "int:int"
 	body, readErr := ioutil.ReadAll(resp.Body)
 	if readErr != nil {
 		log.Fatal(readErr)
